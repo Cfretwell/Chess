@@ -22,10 +22,12 @@ module Slideable
     def moves
         # will retrurn arr of all possible moves 
         moves = []
+        move_dirs.each do |dir|
+            # p dir
+            moves = moves + grow_unblocked_moves_in_dir(dir)
+        end
 
-
-        
-
+        p moves 
 
     end
 
@@ -37,8 +39,24 @@ module Slideable
         raise 'should have overritten - moveDirs' 
     end
 
-    def grow_unblocked_moves_in_dir(dx, dy)
+    def grow_unblocked_moves_in_dir(dir)
+        dx = dir[0]
+        dy = dir[1]
+        moves =[]
+        check_pos = [pos[0] + dx  ,  pos[1] + dy]
 
+        while board.valid_pos?(check_pos) 
+
+            if board.empty?(check_pos)
+                moves << check_pos
+
+            else
+                moves << check_pos if board[check_pos].color != color 
+                break
+            end
+            check_pos = [check_pos[0] + dx  ,check_pos[1] + dy]
+        end
+        moves 
 
     end
 

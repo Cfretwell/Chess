@@ -18,7 +18,7 @@ class Piece
 
     def valid_moves
         # return all valid moves 
-
+        moves()
         # reject if moves into check 
 
     end
@@ -28,6 +28,7 @@ class Piece
     end
 
     private 
+    attr_reader :pos 
 
     def move_into_check?(end_pos)
         # will check if moving this peice will put in check 

@@ -12,7 +12,33 @@ class Board
 
     end
 
-    
+    def [](pos)
+        @rows[pos[0]][pos[1]]
+    end
+
+    def []=(pos, val)
+        @rows[pos[0]][pos[1]] = val 
+    end
+
+
+    def move_piece(start_pos, end_pos)
+        
+        start = @rows[start_pos[0]][start_pos[1]]
+        stop  = @rows[end_pos[0]][end_pos[1]]
+        
+        raise if start.nil?
+        raise if !stop.nil?        
+
+        @rows[end_pos[0]][end_pos[1]] = start 
+        @rows[start_pos[0]][start_pos[1]] = nil 
+
+    end
+
+    def valid_pos?(pos) # just check coordanates 
+        pos.all? {|i| i.between?(0,7)  }
+
+    end
+
 
     def add_piece(piece, pos)
 
@@ -31,45 +57,53 @@ class Board
 
     end
 
-
-    def [](pos)
-        @rows[pos[0]][pos[1]]
+    def empty?(pos)
+        self[pos].empty?
     end
+    
+    def show_valid_moves(pos)
+        return nil if empty?(pos)
 
-    def []=(pos, val)
-        @rows[pos[0]][pos[1]] = val 
+        moves = self[pos].valid_moves
+
+        (0...@rows.length).each do |i|
+            (0...@rows[0].length).each do |j|
+                val = self[[i,j]].symbol
+                
+                if moves.include?([i,j])
+                    val = val.on_green
+                end
+                print val +" "
+            end
+            puts""
+        end
+
     end
-
-    def move_piece(start_pos, end_pos)
-        
-        start = @rows[start_pos[0]][start_pos[1]]
-        stop  = @rows[end_pos[0]][end_pos[1]]
-        
-        raise if start.nil?
-        raise if !stop.nil?        
-
-        @rows[end_pos[0]][end_pos[1]] = start 
-        @rows[start_pos[0]][start_pos[1]] = nil 
-
-    end
+    
 
     private 
     attr_reader :sentinel
 
     def start_fill()
         @rows = Array.new(8) { Array.new(8, sentinel)}
-        start_rows = [0,1,6,7]
+        black_rows = [0]
+        white_rows = [6]
         # debugger 
         (0...@rows.length).each do |i|
             (0...@rows[0].length).each do |j|
                 # puts i.to_s + ", " + j.to_s
-                if start_rows.include?(i)
-                    Rook.new(:color,self, [i,j])
+                if black_rows.include?(i)
+                    Rook.new(:black,self, [i,j])
+                elsif white_rows.include?(i)
+                    Rook.new(:white,self, [i,j])
                 end
+
             end
         end
 
     end
+
+    
 
 
 end
@@ -77,9 +111,14 @@ end
 
 b = Board.new()
 
-# p b[[0,0]]
+# b[[0,0]].valid_moves
+
 
 b.render
+
+b.show_valid_moves([0,0])
+
+b.show_valid_moves([6,3])
 
 # b.move_piece([0,0], [3,3])
 
