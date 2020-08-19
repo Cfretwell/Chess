@@ -1,18 +1,17 @@
-
 require_relative 'piece.rb' 
 require_relative 'slideable.rb'
 
-class Rook < Piece
+class Bishop < Piece
     include Slideable 
 
     def symbol 
-        '♜'.colorize(color)
+        '♝'.colorize(color)
     end
 
     protected 
 
     def move_dirs
-        horz_and_ver_dirs
+        diag_dirs
     end
 
 

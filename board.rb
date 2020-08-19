@@ -68,7 +68,7 @@ class Board
 
         (0...@rows.length).each do |i|
             (0...@rows[0].length).each do |j|
-                val = self[[i,j]].symbol
+                val = self[[i,j]].symbol 
                 
                 if moves.include?([i,j])
                     val = val.on_green
@@ -86,7 +86,7 @@ class Board
 
     def start_fill()
         @rows = Array.new(8) { Array.new(8, sentinel)}
-        black_rows = [0]
+        black_rows = []
         white_rows = [6]
         # debugger 
         (0...@rows.length).each do |i|
@@ -100,6 +100,8 @@ class Board
 
             end
         end
+
+        Queen.new(:black,self, [1,1])
 
     end
 
@@ -116,9 +118,9 @@ b = Board.new()
 
 b.render
 
-b.show_valid_moves([0,0])
+b.show_valid_moves([1,1])
 
-b.show_valid_moves([6,3])
+# b.show_valid_moves([6,3])
 
 # b.move_piece([0,0], [3,3])
 

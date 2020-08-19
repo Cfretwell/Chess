@@ -54,7 +54,7 @@ module Slideable
                 moves << check_pos if board[check_pos].color != color 
                 break
             end
-            check_pos = [check_pos[0] + dx  ,check_pos[1] + dy]
+            check_pos = [check_pos[0] + dx, check_pos[1] + dy]
         end
         moves 
 
