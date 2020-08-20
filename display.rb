@@ -15,17 +15,23 @@ class Display
     
 
     def navigate()
-        while cursor.get_input() == nil 
-            show_valid_moves(cursor.cursor_pos)
+        board.render()
+        input = nil 
+        loop do  
+            input = cursor.get_input()
+            show_valid_moves()
+            
+            break if input != nil 
         end
+        p input 
 
     end
 
 
-    def show_valid_moves(pos)
+    def show_valid_moves()
         # return nil if board.empty?(pos)
 
-        moves = board[pos].valid_moves
+        moves = board[cursor.cursor_pos].valid_moves
 
         (0...board.rows.length).each do |i|
             (0...board.rows[0].length).each do |j|
@@ -34,8 +40,12 @@ class Display
                 if moves.include?([i,j])
                     val = val.on_green
                 end
-                if pos == [i,j]
-                    val = val.on_blue
+                if cursor.cursor_pos == [i,j]
+                    if cursor.selected()
+                        val = val.on_yellow
+                    else
+                        val = val.on_blue
+                    end
                 end
                 print val +" "
             end

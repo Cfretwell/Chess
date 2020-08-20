@@ -35,11 +35,6 @@ class Board
         pos.all? {|i| i.between?(0,7)}
 
     end
-
-
-    # def add_piece(piece, pos)
-    #     self[pos] = piece
-    # end
     
 
     def render 
