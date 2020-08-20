@@ -85,27 +85,35 @@ class Board
 
     def start_fill()
         @rows = Array.new(8) { Array.new(8, sentinel)}
-        back_rows = [1,6]
-        front_rows = [0,7]
+        back_rows = [0,7]
+        front_rows = [1,6]
         # debugger 
         (0...@rows.length).each do |i|
             # (0...@rows[0].length).each do |j|
                 # puts i.to_s + ", " + j.to_s
-                if i == 0 || i==1
-                    color = :white
+                case i 
+                when 0 , 1 
+                    color = :black 
+                # when 6||7
                 else
-                    color = :black
+                    color = :white
                 end
+                p color 
+
+
                 if back_rows.include?(i)
                     fill_back_row(color,i)
                 elsif front_rows.include?(i)
+                    fill_front_row(color,i)
                     # Rook.new(:white,self, [i,j])
                 end
 
             # end
         end
 
-        Knight.new(:black,self, [4,3])
+        # Pawn.new(:black,self, [2,1])
+        # Pawn.new(:black,self, [1,2])
+        # Pawn.new(:white,self, [2,3])
 
     end
 
@@ -115,8 +123,12 @@ class Board
         peices.each_with_index do |peice,j|
             peice.new(color,self,[row,j])
         end
+    end
 
-
+    def fill_front_row(color,row)
+        (0..7).each do |j|
+            Pawn.new(color,self,[row,j])
+        end
 
     end
 
@@ -133,18 +145,20 @@ b = Board.new()
 
 b.render
 
-b.show_valid_moves([4,3])
+# b.show_valid_moves([4,3])
+b.show_valid_moves([1,1])
 
 
 
 # b.show_valid_moves([6,3])
 
-# b.move_piece([4,3], [1,1])
+b.move_piece([1,1], [3,1])
 
-# b.show_valid_moves([1,1])
+b.show_valid_moves([3,1])
+b.show_valid_moves([0,2])
 
 # puts""
 
-# b.render
+b.render
 
 # p b[[0,0]]
