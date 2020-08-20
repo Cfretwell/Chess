@@ -23,19 +23,18 @@ class Board
 
     def move_piece(start_pos, end_pos)
         
-        start = @rows[start_pos[0]][start_pos[1]]
-        stop  = @rows[end_pos[0]][end_pos[1]]
-        
-        raise if start.nil?
-        raise if !stop.nil?        
+        raise if self[start_pos] == sentinel
+        raise if self[end_pos] != sentinel        
 
-        @rows[end_pos[0]][end_pos[1]] = start 
-        @rows[start_pos[0]][start_pos[1]] = nil 
+
+        self[start_pos].pos = end_pos 
+        self[end_pos] = self[start_pos]
+        self[start_pos] = sentinel
 
     end
 
     def valid_pos?(pos) # just check coordanates 
-        pos.all? {|i| i.between?(0,7)  }
+        pos.all? {|i| i.between?(0,7)}
 
     end
 
@@ -86,22 +85,38 @@ class Board
 
     def start_fill()
         @rows = Array.new(8) { Array.new(8, sentinel)}
-        black_rows = []
-        white_rows = [6]
+        back_rows = [1,6]
+        front_rows = [0,7]
         # debugger 
         (0...@rows.length).each do |i|
-            (0...@rows[0].length).each do |j|
+            # (0...@rows[0].length).each do |j|
                 # puts i.to_s + ", " + j.to_s
-                if black_rows.include?(i)
-                    Rook.new(:black,self, [i,j])
-                elsif white_rows.include?(i)
-                    Rook.new(:white,self, [i,j])
+                if i == 0 || i==1
+                    color = :white
+                else
+                    color = :black
+                end
+                if back_rows.include?(i)
+                    fill_back_row(color,i)
+                elsif front_rows.include?(i)
+                    # Rook.new(:white,self, [i,j])
                 end
 
-            end
+            # end
         end
 
-        Queen.new(:black,self, [1,1])
+        Knight.new(:black,self, [4,3])
+
+    end
+
+    def fill_back_row(color,row)
+        peices = [ Rook, Knight, Bishop, Queen,King, Bishop, Knight, Rook]
+
+        peices.each_with_index do |peice,j|
+            peice.new(color,self,[row,j])
+        end
+
+
 
     end
 
@@ -113,16 +128,20 @@ end
 
 b = Board.new()
 
-# b[[0,0]].valid_moves
+# p b[[1,1]].valid_moves
 
 
 b.render
 
-b.show_valid_moves([1,1])
+b.show_valid_moves([4,3])
+
+
 
 # b.show_valid_moves([6,3])
 
-# b.move_piece([0,0], [3,3])
+# b.move_piece([4,3], [1,1])
+
+# b.show_valid_moves([1,1])
 
 # puts""
 

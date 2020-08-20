@@ -11,7 +11,6 @@ class Piece
         @board.add_piece(self, pos)
     end
 
-
     def empty?
         false 
     end
@@ -24,7 +23,7 @@ class Piece
     end
 
     def pos=(val)
-
+        @pos = val 
     end
 
     private 
