@@ -9,13 +9,7 @@ class Pawn < Piece
     end
 
     def moves()
-        moves = forward_steps
-        
-        moves = moves + side_attacks
-        
-
-
-        p moves
+        forward_steps + side_attacks
     end
 
     protected 
@@ -63,7 +57,7 @@ class Pawn < Piece
         attacks = [l,r]
 
         attacks.select do |side|
-            !board.empty?(side) && board[side].color != color 
+             board.valid_pos?(side) && !board.empty?(side) && board[side].color != color 
         end
     end
 

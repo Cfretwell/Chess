@@ -26,11 +26,9 @@ class Board
         raise if self[start_pos] == sentinel
         raise if self[end_pos] != sentinel        
 
-
         self[start_pos].pos = end_pos 
         self[end_pos] = self[start_pos]
         self[start_pos] = sentinel
-
     end
 
     def valid_pos?(pos) # just check coordanates 
@@ -39,10 +37,9 @@ class Board
     end
 
 
-    def add_piece(piece, pos)
-
-        self[pos] = piece
-    end
+    # def add_piece(piece, pos)
+    #     self[pos] = piece
+    # end
     
 
     def render 
@@ -94,13 +91,9 @@ class Board
                 case i 
                 when 0 , 1 
                     color = :black 
-                # when 6||7
-                else
+                when 6 , 7
                     color = :white
                 end
-                p color 
-
-
                 if back_rows.include?(i)
                     fill_back_row(color,i)
                 elsif front_rows.include?(i)
@@ -138,27 +131,27 @@ class Board
 end
 
 
-b = Board.new()
+# b = Board.new()
 
-# p b[[1,1]].valid_moves
-
-
-b.render
-
-# b.show_valid_moves([4,3])
-b.show_valid_moves([1,1])
+# # p b[[1,1]].valid_moves
 
 
+# b.render
 
-# b.show_valid_moves([6,3])
+# # b.show_valid_moves([4,3])
+# b.show_valid_moves([1,1])
 
-b.move_piece([1,1], [3,1])
 
-b.show_valid_moves([3,1])
-b.show_valid_moves([0,2])
 
-# puts""
+# # b.show_valid_moves([6,3])
 
-b.render
+# b.move_piece([1,1], [3,1])
+
+# b.show_valid_moves([3,1])
+# b.show_valid_moves([0,2])
+
+# # puts""
+
+# b.render
 
 # p b[[0,0]]

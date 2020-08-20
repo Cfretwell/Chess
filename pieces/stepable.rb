@@ -15,10 +15,7 @@ module Stepable
                 end
             end
         end
-        
         moves 
-
-
     end
 
     private 

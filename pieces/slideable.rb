@@ -26,9 +26,7 @@ module Slideable
             # p dir
             moves = moves + grow_unblocked_moves_in_dir(dir)
         end
-
-        p moves 
-
+        moves 
     end
 
     private 
@@ -49,7 +47,6 @@ module Slideable
 
             if board.empty?(check_pos)
                 moves << check_pos
-
             else
                 moves << check_pos if board[check_pos].color != color 
                 break
@@ -57,9 +54,6 @@ module Slideable
             check_pos = [check_pos[0] + dx, check_pos[1] + dy]
         end
         moves 
-
     end
-
-
 
 end
