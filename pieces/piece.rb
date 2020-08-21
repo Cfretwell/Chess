@@ -1,7 +1,7 @@
 
 class Piece 
 
-    attr_reader :board, :color
+    attr_reader :board, :color, :pos
 
     def initialize(color, board, pos)
         @color = color 
@@ -26,7 +26,7 @@ class Piece
     end
 
     private 
-    attr_reader :pos 
+    # attr_reader :pos 
 
     def move_into_check?(end_pos)
         # will check if moving this peice will put in check 

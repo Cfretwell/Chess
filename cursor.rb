@@ -99,7 +99,7 @@ class Cursor
     # if valid 
     new_pos = [cursor_pos[0]+diff[0], cursor_pos[1]+diff[1]]
     if board.valid_pos?(new_pos)
-        p "update_pos: " + new_pos.to_s 
+        # p "update_pos: " + new_pos.to_s 
         @cursor_pos = new_pos
     end
   end

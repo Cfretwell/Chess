@@ -10,6 +10,7 @@ class Display
         @board = Board.new()
         @cursor = Cursor.new([0,0], board)
 
+        
 
     end
     
@@ -19,7 +20,7 @@ class Display
         input = nil 
         loop do  
             input = cursor.get_input()
-            show_valid_moves()
+            show_valid_moves(cursor_moves())
             
             break if input != nil 
         end
@@ -27,11 +28,14 @@ class Display
 
     end
 
+    def cursor_moves()
+        moves = board[cursor.cursor_pos].valid_moves
+    end
 
-    def show_valid_moves()
+    def show_valid_moves(moves)
         # return nil if board.empty?(pos)
 
-        moves = board[cursor.cursor_pos].valid_moves
+        
 
         (0...board.rows.length).each do |i|
             (0...board.rows[0].length).each do |j|
@@ -61,7 +65,9 @@ end
 
 d = Display.new()
 
-d.navigate
+# d.show_valid_moves(d.board.chalanged_pos(:white))
+
+# d.navigate
 
 
 
