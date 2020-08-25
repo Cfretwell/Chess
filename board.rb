@@ -3,13 +3,13 @@ require 'colorize'
 
 class Board 
     require_relative 'pieces'
-    attr_accessor :rows 
-    attr_reader :kings
+    attr_accessor :rows, :kings 
 
-    def initialize()
+    def initialize(fill)
         @sentinel = NullPiece.instance 
-        @kings = {}
-        start_fill()
+        @kings = Hash.new
+        @rows = Array.new(8) { Array.new(8, sentinel)}
+        start_fill() if fill 
 
     end
 
@@ -20,16 +20,39 @@ class Board
     def []=(pos, val)
         @rows[pos[0]][pos[1]] = val 
     end
+    
+    
 
+    def pieces(color)
+        pieces = @rows.flatten
+        pieces.select {|p| p.color == color}
+    end
 
-    def move_piece(start_pos, end_pos)
+    def move_piece(piece_color, start_pos, end_pos)
+        p self[end_pos]
         
-        raise if self[start_pos] == sentinel
-        raise if self[end_pos] != sentinel        
+        raise "move piece start empty" if self[start_pos].empty? 
+        
+        raise "must move your own color"if self[start_pos].color != piece_color 
+
+        # raise "move piece end invalid" if self[end_pos] != sentinel 
+        vm =self[start_pos].valid_moves()
+        p "valid moves" 
+        # p vm
+        raise "Invalid Move" if !vm.include?(end_pos)
+    
 
         self[start_pos].pos = end_pos 
         self[end_pos] = self[start_pos]
         self[start_pos] = sentinel
+    end
+
+
+    def move_piece!(piece_color, start_pos, end_pos)
+        self[start_pos].pos = end_pos 
+        self[end_pos] = self[start_pos]
+        self[start_pos] = sentinel
+
     end
 
     def valid_pos?(pos) # just check coordanates 
@@ -59,9 +82,15 @@ class Board
     
     def in_check?(color)
         opp_color = if color == :white then :black else :white end 
-        opp_chalange_pos = all_valid_pos(opp_color)
-        return true if opp_chalange_pos.include?(kings[color].pos)
-        false 
+        opp_chalange_pos = [] 
+        pieces(opp_color).each do |p|
+            # p p.class 
+            # p p.color   
+            opp_chalange_pos = opp_chalange_pos + p.moves
+        end
+        val = false 
+        val = true if opp_chalange_pos.include?(kings[color].pos)
+        val 
     end
 
     def all_valid_pos(color)
@@ -74,12 +103,25 @@ class Board
         arr 
     end
 
+    def dup 
+        new_board = Board.new(false)
+        rows.flatten.each do |e|
+            if e.class != NullPiece
+                if e.class == King 
+                    new_board.kings[e.color] = e.class.new(e.color, new_board, e.pos)
+                else
+                    e.class.new(e.color, new_board, e.pos)
+                end
+            end
+        end
+        new_board
+    end
+
     private 
     attr_reader :sentinel
 
 
-    def start_fill()
-        @rows = Array.new(8) { Array.new(8, sentinel)}
+    def start_fill()        
         back_rows = [0,7]
         front_rows = [1,6]
         # debugger 
@@ -107,8 +149,8 @@ class Board
 
         peices.each_with_index do |peice,j|
             
-            if peice == King 
-                kings[color] = peice.new(color,self,[row,j])
+            if peice == King  
+                @kings[color] = peice.new(color,self,[row,j])
             else
                 peice.new(color,self,[row,j])
             end
@@ -128,18 +170,32 @@ class Board
 end
 
 
-b = Board.new()
+# b = Board.new(true)
 
-p b.in_check?(:black)
 
-b.render
-b.move_piece([1,3], [3,3])
 
-b.render
-b.move_piece([7,5], [2,2])
+# b2 = b.dup 
 
-b.render
-p b.in_check?(:black)
+# b.render 
+
+# b2.render 
+
+# b2.move_piece([1,3], [3,3])
+
+# b.render 
+
+# b2.render 
+
+# p b.in_check?(:black)
+
+# b.render
+# b.move_piece([1,3], [3,3])
+
+# b.render
+# b.move_piece([7,5], [2,2])
+
+# b.render
+# p b.in_check?(:black)
 
 # # p b[[1,1]].valid_moves
 

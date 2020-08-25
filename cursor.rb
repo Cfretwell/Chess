@@ -32,7 +32,7 @@ MOVES = {
 
 class Cursor
 
-  attr_reader :cursor_pos, :board 
+  attr_reader :cursor_pos, :board
   attr_accessor :selected 
 
   def initialize(cursor_pos, board)
